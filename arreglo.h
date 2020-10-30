@@ -30,9 +30,18 @@ public:
     void eliminarInicio();
     void eliminarFinal();
 
+    /* Busquedas al arreglo */
+    T* buscar(const T&);
+    Arreglo<T*> buscarTodos(const T&);
+
     /* Operadores logicos */
     T operator[](size_t p) {
         return arreglo[p];
+    }
+
+    friend Arreglo<T>& operator<<(Arreglo<T> &a, const T &s) {
+        a.insertarFinal(s);
+        return a;
     }
 
 };
@@ -83,6 +92,7 @@ void Arreglo<T>::insertar(const T &s, size_t p) {
     arreglo[p] = s; // asignamos el elemento
     cont++;
 }
+
 template <class T>
 void Arreglo<T>::insertarInicio(const T &s) {
     if(cont==tam) { // ¿Esta lleno?
@@ -143,6 +153,30 @@ void Arreglo<T>::eliminarFinal() {
     }
 
     cont--; // reducimos el contador
+}
+
+template <class T>
+T* Arreglo<T>::buscar(const T &s) {
+    for(size_t i=0;i<cont;i++) { // recorremos el arreglo
+        if(s==arreglo[i]) { // buscamos
+            return &arreglo[i]; // retornamos
+        }
+    }
+    return nullptr;
+}
+
+template <class T>
+Arreglo<T*> Arreglo<T>::buscarTodos(const T &s) {
+    
+    Arreglo<T*> punteros; // arreglo de punteros
+
+    for(size_t i=0;i<cont;i++) { // recorremos arreglo
+        if(s==arreglo[i]) { // buscamos
+            punteros.insertarFinal(&arreglo[i]); // inserta direccion al arreglo
+        }
+    }
+
+    return punteros; // retornamos punteros
 }
 
 template <class T>
